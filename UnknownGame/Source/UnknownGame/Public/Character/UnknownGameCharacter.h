@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "UnknownGameCharacter.generated.h"
 
+class UHealthComponent;
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
@@ -35,8 +36,6 @@ protected:
 	void Look(const FInputActionValue& Value);
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	virtual void BeginPlay();
 
 private:
 	

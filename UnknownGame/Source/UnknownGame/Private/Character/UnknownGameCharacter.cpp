@@ -10,6 +10,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 
+
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 AUnknownGameCharacter::AUnknownGameCharacter()
@@ -40,12 +41,6 @@ AUnknownGameCharacter::AUnknownGameCharacter()
 }
 
 
-void AUnknownGameCharacter::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-
 void AUnknownGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
@@ -62,6 +57,7 @@ void AUnknownGameCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AUnknownGameCharacter::Move);
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AUnknownGameCharacter::Look);
+		
 	}
 	else
 	{
