@@ -4,6 +4,7 @@
 #include "Components/HealthComponent.h"
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Subsystems/CollectibleSubsystem.h"
 
 
 AMyCharacter::AMyCharacter()
@@ -36,6 +37,15 @@ void AMyCharacter::BindDelegates()
 	if (!HealthComp) return;
 	HealthComp->OnHealthChangedDelegate.AddUniqueDynamic(this, &AMyCharacter::PrintHealthChanges);
 	HealthComp->OnDeathDelegate.AddUniqueDynamic(this, &AMyCharacter::OnDeath);
+	UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>();
+	if (!Subsystem) return;
+	Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
+}
+
+
+void AMyCharacter::OnCollectibleTargetReached()
+{
+	UE_LOG(LogTemp, Error, TEXT("%s | Target reached"), *this->GetName());
 }
 
 

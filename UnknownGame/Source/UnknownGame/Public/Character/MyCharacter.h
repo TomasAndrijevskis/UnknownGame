@@ -45,6 +45,8 @@ private:
 	UFUNCTION()
 	void PrintHealthChanges(float NewHealth, float Delta);
 
+	void OnCollectibleTargetReached();
+	
 	UFUNCTION()
 	void OnDeath();
 };
