@@ -13,7 +13,7 @@ class UNKNOWNGAME_API UInteractionComponent : public UActorComponent
 
 public:	
 
-	void TryInteract() const;
+	void TryInteract();
 
 private:
 

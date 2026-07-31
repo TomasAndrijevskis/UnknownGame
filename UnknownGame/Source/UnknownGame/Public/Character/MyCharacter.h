@@ -6,6 +6,9 @@
 #include "MyCharacter.generated.h"
 
 
+class UInteractionComponent;
+class UHealthComponent;
+
 UCLASS()
 class UNKNOWNGAME_API AMyCharacter : public AUnknownGameCharacter
 {
@@ -24,17 +27,18 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* HealAction;
+	UInputAction* TakeDamageAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* TakeDamageAction;
+	UInputAction* InteractionInput;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	UHealthComponent* HealthComp;
+	TObjectPtr<UHealthComponent> HealthComp;
 
-	void Heal();
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UInteractionComponent* InteractionComp;
 
-	void TakeDamage();
+	void HandleTestDamageInput();
 
 	void BindDelegates();
 

@@ -3,15 +3,16 @@
 #include "Interfaces/Interactable.h"
 
 
-void UInteractionComponent::TryInteract() const
+void UInteractionComponent::TryInteract()
 {
+	UE_LOG(LogTemp, Warning, TEXT("TryInteract"));
 	FHitResult HitResult;
 	HitAnything(GetOwner()->GetActorTransform(), HitResult);
 	AActor* HitActor = HitResult.GetActor();
-	if (HitActor && HitActor->Implements<UInteractable>())
+	if (IsValid(HitActor) && HitActor->Implements<UInteractable>())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Interactable"));
-		IInteractable::Execute_OnInteract(GetOwner(), HitActor);
+		UE_LOG(LogTemp, Warning, TEXT("Interactable: %s"), *HitActor->GetName());
+		IInteractable::Execute_OnInteract(HitActor, GetOwner());
 	}
 }
 

@@ -18,7 +18,7 @@ void UHealthComponent::Heal(const float Amount)
 }
 
 
-void UHealthComponent::TakeDamage(const float Amount)
+void UHealthComponent::ApplyDamage(const float Amount)
 {
 	if (bIsDead || Amount <= 0) return;
 	const float OldHealth = CurrentHealth;

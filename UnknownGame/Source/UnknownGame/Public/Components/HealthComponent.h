@@ -19,7 +19,7 @@ public:
 	void Heal(const float Amount);
 
 	UFUNCTION(BlueprintCallable)
-	void TakeDamage(const float Amount);
+	void ApplyDamage(const float Amount);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChangedDelegate;
