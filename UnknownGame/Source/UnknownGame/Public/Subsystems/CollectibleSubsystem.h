@@ -6,6 +6,7 @@
 #include "CollectibleSubsystem.generated.h"
 
 DECLARE_MULTICAST_DELEGATE(FOnTargetReached)
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCountChanged, int, int);
 UCLASS()
 class UNKNOWNGAME_API UCollectibleSubsystem : public UGameInstanceSubsystem
 {
@@ -18,8 +19,14 @@ public:
 	void ReportCollected();
 
 	bool IsTargetReached() const;
+
+	int GetCount() const;
+
+	int GetTarget() const;
 	
 	FOnTargetReached OnTargetReachedDelegate;
+
+	FOnCountChanged OnCountChangedDelegate;
 	
 private:
 	

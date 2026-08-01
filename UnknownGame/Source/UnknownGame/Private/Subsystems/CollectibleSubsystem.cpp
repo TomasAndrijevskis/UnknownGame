@@ -12,6 +12,7 @@ void UCollectibleSubsystem::ReportCollected()
 {
 	if (!CanAdd()) return;
 	Count++;
+	OnCountChangedDelegate.Broadcast(Count, Target);
 	if (Count == Target)
 	{
 		OnTargetReachedDelegate.Broadcast();
@@ -21,3 +22,5 @@ void UCollectibleSubsystem::ReportCollected()
 
 bool UCollectibleSubsystem::IsTargetReached() const {return Count >= Target;}
 bool UCollectibleSubsystem::CanAdd() const {return Count < Target;}
+int UCollectibleSubsystem::GetCount() const{return Count;}
+int UCollectibleSubsystem::GetTarget() const{return Target;}

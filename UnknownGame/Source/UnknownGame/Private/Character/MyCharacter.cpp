@@ -5,6 +5,7 @@
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Subsystems/CollectibleSubsystem.h"
+#include "UI/MainPlayerWidget.h"
 
 
 AMyCharacter::AMyCharacter()
@@ -29,14 +30,15 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	BindDelegates();
+	CreatePlayersWidget();
 }
 
 
 void AMyCharacter::BindDelegates()
 {
 	if (!HealthComp) return;
-	HealthComp->OnHealthChangedDelegate.AddUniqueDynamic(this, &AMyCharacter::PrintHealthChanges);
-	HealthComp->OnDeathDelegate.AddUniqueDynamic(this, &AMyCharacter::OnDeath);
+	HealthComp->OnHealthChangedDelegate.AddUObject(this, &AMyCharacter::PrintHealthChanges);
+	HealthComp->OnDeathDelegate.AddUObject(this, &AMyCharacter::OnDeath);
 	UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>();
 	if (!Subsystem) return;
 	Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
@@ -49,7 +51,7 @@ void AMyCharacter::OnCollectibleTargetReached()
 }
 
 
-void AMyCharacter::PrintHealthChanges(float NewHealth, float Delta)
+void AMyCharacter::PrintHealthChanges(float NewHealth, float MaxHealth, float Delta)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f, Delta: %f"), NewHealth, Delta);
 }
@@ -60,6 +62,16 @@ void AMyCharacter::OnDeath()
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if (!PC) return;
 	this->DisableInput(PC);
+}
+
+
+void AMyCharacter::CreatePlayersWidget()
+{
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!PlayersWidgetClass || !PC) return;
+	TObjectPtr<UMainPlayerWidget> PlayersWidgetRef = CreateWidget<UMainPlayerWidget>(PC, PlayersWidgetClass);
+	if (!PlayersWidgetRef) return;
+	PlayersWidgetRef->AddToViewport(0);
 }
 
 

@@ -6,6 +6,8 @@
 #include "MyCharacter.generated.h"
 
 
+class UMainPlayerWidget;
+class UPlayersHUD;
 class UInteractionComponent;
 class UHealthComponent;
 
@@ -41,12 +43,16 @@ private:
 	void HandleTestDamageInput();
 
 	void BindDelegates();
-
-	UFUNCTION()
-	void PrintHealthChanges(float NewHealth, float Delta);
+	
+	void PrintHealthChanges(float NewHealth, float MaxHealth, float Delta);
 
 	void OnCollectibleTargetReached();
 	
 	UFUNCTION()
 	void OnDeath();
+
+	void CreatePlayersWidget();
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UMainPlayerWidget> PlayersWidgetClass;
 };

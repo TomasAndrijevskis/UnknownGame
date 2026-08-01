@@ -6,8 +6,8 @@
 #include "HealthComponent.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, Delta);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeath);
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FOnHealthChanged, float, float, float);
+DECLARE_MULTICAST_DELEGATE(FOnDeath);
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class UNKNOWNGAME_API UHealthComponent : public UActorComponent
 {
@@ -21,10 +21,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ApplyDamage(const float Amount);
 
-	UPROPERTY(BlueprintAssignable)
-	FOnHealthChanged OnHealthChangedDelegate;
+	float GetMaxHealth() const;
 
-	UPROPERTY(BlueprintAssignable)
+	float GetCurrentHealth() const;
+	
+	FOnHealthChanged OnHealthChangedDelegate;
+	
 	FOnDeath OnDeathDelegate;
 	
 protected:
