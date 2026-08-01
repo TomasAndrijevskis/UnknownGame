@@ -1,6 +1,7 @@
 
 #include "Character/MyCharacter.h"
 #include "EnhancedInputComponent.h"
+#include "Components/AttackComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,6 +13,7 @@ AMyCharacter::AMyCharacter()
 {
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction component"));
+	AttackComp = CreateDefaultSubobject<UAttackComponent>(TEXT("Attack component"));
 }
 
 
@@ -20,7 +22,7 @@ void AMyCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputC
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	if (!InteractionComp) return;
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-		EnhancedInputComponent->BindAction(TakeDamageAction, ETriggerEvent::Started, this, &AMyCharacter::HandleTestDamageInput);
+		EnhancedInputComponent->BindAction(AttackInput, ETriggerEvent::Started, AttackComp, &UAttackComponent::Attack);
 		EnhancedInputComponent->BindAction(InteractionInput, ETriggerEvent::Started, InteractionComp, &UInteractionComponent::TryInteract);
 	}
 }

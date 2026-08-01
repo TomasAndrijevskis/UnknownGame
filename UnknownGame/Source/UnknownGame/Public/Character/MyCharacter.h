@@ -6,6 +6,7 @@
 #include "MyCharacter.generated.h"
 
 
+class UAttackComponent;
 class UMainPlayerWidget;
 class UPlayersHUD;
 class UInteractionComponent;
@@ -29,7 +30,7 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* TakeDamageAction;
+	UInputAction* AttackInput;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractionInput;
@@ -40,6 +41,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UInteractionComponent* InteractionComp;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UAttackComponent* AttackComp;
+	
 	void HandleTestDamageInput();
 
 	void BindDelegates();
