@@ -19,7 +19,5 @@ void UCollectibleSubsystem::ReportCollected()
 }
 
 
-bool UCollectibleSubsystem::CanAdd() const
-{
-	return Count < Target;
-}
+bool UCollectibleSubsystem::IsTargetReached() const {return Count >= Target;}
+bool UCollectibleSubsystem::CanAdd() const {return Count < Target;}

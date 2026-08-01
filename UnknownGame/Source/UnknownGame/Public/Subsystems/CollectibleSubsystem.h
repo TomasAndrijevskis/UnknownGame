@@ -17,6 +17,8 @@ public:
 	
 	void ReportCollected();
 
+	bool IsTargetReached() const;
+	
 	FOnTargetReached OnTargetReachedDelegate;
 	
 private:
