@@ -4,9 +4,11 @@
 #include "CoreMinimal.h"
 #include "GameplayTagAssetInterface.h"
 #include "Character/UnknownGameCharacter.h"
+#include "Data/EEndgameResults.h"
 #include "MyCharacter.generated.h"
 
 
+class UEndgameScreen;
 class UAttackComponent;
 class UMainPlayerWidget;
 class UPlayersHUD;
@@ -25,7 +27,6 @@ public:
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
 	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
-
 	
 protected:
 
@@ -56,14 +57,20 @@ private:
 
 	void OnCollectibleTargetReached();
 	
-	UFUNCTION()
-	void OnDeath();
+	void OnGameEnd(EEndgameResults Result);
 
+	void OnDeath();
+	
 	void CreatePlayersWidget();
+
+	void CreateEndgameWidget(EEndgameResults Result);
 	
 	UPROPERTY(EditAnywhere, Category = "Gameplay Tags")
 	FGameplayTagContainer GameplayTags;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UMainPlayerWidget> PlayersWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UEndgameScreen> EndgameWidgetClass;
 };

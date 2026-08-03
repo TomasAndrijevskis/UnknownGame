@@ -20,6 +20,7 @@ void AExitDoor::OnInteract_Implementation(AActor* Interactor)
 		{
 			UE_LOG(LogTemp, Error, TEXT("Game is finished"));
 			bIsCompleted = true;
+			Subsystem->OnCompletedDelegate.Broadcast(EEndgameResults::Win);
 		}
 	}
 }

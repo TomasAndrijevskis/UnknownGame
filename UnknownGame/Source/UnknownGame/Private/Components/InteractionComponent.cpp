@@ -5,7 +5,6 @@
 
 void UInteractionComponent::TryInteract()
 {
-	UE_LOG(LogTemp, Warning, TEXT("TryInteract"));
 	FHitResult HitResult;
 	HitAnything(GetOwner()->GetActorTransform(), HitResult);
 	AActor* HitActor = HitResult.GetActor();
@@ -21,6 +20,8 @@ void UInteractionComponent::HitAnything(const FTransform& OwnerTransform, FHitRe
 {
 	const FVector3d StartLocation = OwnerTransform.GetLocation();
 	const FVector3d EndLocation = StartLocation + OwnerTransform.GetRotation().GetForwardVector() * InteractableDistance;
-	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, ECC_Visibility);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(GetOwner());
+	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, ECC_Visibility, Params);
 	if (OutHit.bBlockingHit) DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, 3.f);
 }

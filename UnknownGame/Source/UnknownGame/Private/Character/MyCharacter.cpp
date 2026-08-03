@@ -6,6 +6,7 @@
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Subsystems/CollectibleSubsystem.h"
+#include "UI/EndgameScreen.h"
 #include "UI/MainPlayerWidget.h"
 
 
@@ -44,26 +45,33 @@ void AMyCharacter::BindDelegates()
 	UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>();
 	if (!Subsystem) return;
 	Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
-}
-
-
-void AMyCharacter::OnCollectibleTargetReached()
-{
-	UE_LOG(LogTemp, Error, TEXT("%s | Target reached"), *this->GetName());
-}
-
-
-void AMyCharacter::PrintHealthChanges(float NewHealth, float MaxHealth, float Delta)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Health: %f, Delta: %f"), NewHealth, Delta);
+	Subsystem->OnCompletedDelegate.AddUObject(this, &AMyCharacter::OnGameEnd);
 }
 
 
 void AMyCharacter::OnDeath()
 {
+	OnGameEnd(EEndgameResults::Loss);
+}
+
+
+void AMyCharacter::OnGameEnd(EEndgameResults Result)
+{
 	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if (!PC) return;
 	this->DisableInput(PC);
+	CreateEndgameWidget(Result);
+}
+
+
+void AMyCharacter::CreateEndgameWidget(EEndgameResults Result)
+{
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (!EndgameWidgetClass || !PC) return;
+	TObjectPtr<UEndgameScreen> EndgameWidgetRef = CreateWidget<UEndgameScreen>(PC, EndgameWidgetClass);
+	if (!EndgameWidgetRef) return;
+	EndgameWidgetRef->SetMessage(Result);
+	EndgameWidgetRef->AddToViewport(0);
 }
 
 
@@ -76,6 +84,17 @@ void AMyCharacter::CreatePlayersWidget()
 	PlayersWidgetRef->AddToViewport(0);
 }
 
+
+void AMyCharacter::PrintHealthChanges(float NewHealth, float MaxHealth, float Delta)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Health: %f, Delta: %f"), NewHealth, Delta);
+}
+
+
+void AMyCharacter::OnCollectibleTargetReached()
+{
+	UE_LOG(LogTemp, Error, TEXT("%s | Target reached"), *this->GetName());
+}
 
 void AMyCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const{TagContainer = GameplayTags;}
 bool AMyCharacter::HasMatchingGameplayTag(FGameplayTag TagToCheck) const{return GameplayTags.HasTag(TagToCheck);}
