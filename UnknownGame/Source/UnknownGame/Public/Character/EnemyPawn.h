@@ -5,6 +5,8 @@
 #include "GameFramework/Pawn.h"
 #include "EnemyPawn.generated.h"
 
+class UDetectionComponent;
+class USphereComponent;
 class UAttackComponent;
 class UCapsuleComponent;
 class UHealthComponent;
@@ -19,6 +21,7 @@ public:
 
 	AEnemyPawn();
 
+	
 protected:
 
 	virtual void BeginPlay() override;
@@ -32,12 +35,18 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UStaticMeshComponent> Mesh;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USphereComponent> AttackArea;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UHealthComponent> HealthComp;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttackComponent> AttackComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDetectionComponent> DetectionComp;
 	
 	void BindDelegates();
 	

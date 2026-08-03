@@ -43,3 +43,6 @@ void UAttackComponent::OnCooldownEnded()
 {
 	bIsOnCooldown = false;
 }
+
+
+float UAttackComponent::GetAttackDistance() const{return AttackDistance;}

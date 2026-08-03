@@ -14,6 +14,8 @@ class UNKNOWNGAME_API UAttackComponent : public UActorComponent
 public:	
 
 	void Attack();
+
+	float GetAttackDistance() const;
 	
 private:
 
