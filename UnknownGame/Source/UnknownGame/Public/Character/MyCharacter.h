@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "Character/UnknownGameCharacter.h"
 #include "MyCharacter.generated.h"
 
@@ -13,7 +14,7 @@ class UInteractionComponent;
 class UHealthComponent;
 
 UCLASS()
-class UNKNOWNGAME_API AMyCharacter : public AUnknownGameCharacter
+class UNKNOWNGAME_API AMyCharacter : public AUnknownGameCharacter, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -21,6 +22,11 @@ public:
 
 	AMyCharacter();
 
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
+
+	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
+
+	
 protected:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -43,8 +49,6 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UAttackComponent* AttackComp;
-	
-	void HandleTestDamageInput();
 
 	void BindDelegates();
 	
@@ -56,6 +60,9 @@ private:
 	void OnDeath();
 
 	void CreatePlayersWidget();
+	
+	UPROPERTY(EditAnywhere, Category = "Gameplay Tags")
+	FGameplayTagContainer GameplayTags;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UMainPlayerWidget> PlayersWidgetClass;

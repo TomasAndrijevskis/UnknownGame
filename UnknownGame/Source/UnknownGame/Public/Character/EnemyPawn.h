@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagAssetInterface.h"
 #include "GameFramework/Pawn.h"
 #include "EnemyPawn.generated.h"
 
@@ -13,7 +14,7 @@ class UHealthComponent;
 class UStaticMeshComponent;
 
 UCLASS()
-class UNKNOWNGAME_API AEnemyPawn : public APawn
+class UNKNOWNGAME_API AEnemyPawn : public APawn, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
@@ -21,12 +22,16 @@ public:
 
 	AEnemyPawn();
 
+	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
+
+	virtual bool HasMatchingGameplayTag(FGameplayTag TagToCheck) const override;
 	
 protected:
 
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
+
 	
 private:
 
@@ -51,5 +56,7 @@ private:
 	void BindDelegates();
 	
 	void OnDeath();
-	
+
+	UPROPERTY(EditAnywhere, Category = "Gameplay Tags")
+	FGameplayTagContainer GameplayTags;
 };

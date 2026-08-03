@@ -77,7 +77,5 @@ void AMyCharacter::CreatePlayersWidget()
 }
 
 
-void AMyCharacter::HandleTestDamageInput()
-{
-	HealthComp->ApplyDamage(10);
-}
+void AMyCharacter::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const{TagContainer = GameplayTags;}
+bool AMyCharacter::HasMatchingGameplayTag(FGameplayTag TagToCheck) const{return GameplayTags.HasTag(TagToCheck);}

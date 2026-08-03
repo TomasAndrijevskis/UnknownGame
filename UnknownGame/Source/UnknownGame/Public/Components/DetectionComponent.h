@@ -2,6 +2,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "DetectionComponent.generated.h"
 
@@ -31,4 +32,5 @@ private:
 	TArray<AActor*> Actors;
 
 	FRotator DefaultRotation;
+	
 };

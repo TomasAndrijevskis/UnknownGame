@@ -62,3 +62,7 @@ void AEnemyPawn::OnDeath()
 {
 	Destroy();
 }
+
+
+void AEnemyPawn::GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const{TagContainer = GameplayTags;}
+bool AEnemyPawn::HasMatchingGameplayTag(FGameplayTag TagToCheck) const{return GameplayTags.HasTag(TagToCheck);}

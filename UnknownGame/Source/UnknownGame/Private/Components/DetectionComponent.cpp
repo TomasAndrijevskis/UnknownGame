@@ -1,5 +1,6 @@
 
 #include "Components/DetectionComponent.h"
+#include "GameplayTagAssetInterface.h"
 #include "Components/HealthComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 
@@ -15,8 +16,18 @@ void UDetectionComponent::OnBeginOverlap(UPrimitiveComponent* OverlappedComponen
 {
 	if (OtherActor && OtherActor->FindComponentByClass<UHealthComponent>())
 	{
-		DefaultRotation = GetOwner()->GetActorRotation();
-		if (!Actors.Contains(OtherActor)) Actors.Add(OtherActor);
+		IGameplayTagAssetInterface* OwnerTagInterface = Cast<IGameplayTagAssetInterface>(GetOwner());
+		IGameplayTagAssetInterface* EnemyTagInterface = Cast<IGameplayTagAssetInterface>(OtherActor);
+		if (OwnerTagInterface && EnemyTagInterface)
+		{
+			FGameplayTagContainer GameplayTags;
+			OwnerTagInterface->GetOwnedGameplayTags(GameplayTags);
+			if (!EnemyTagInterface->HasAnyMatchingGameplayTags(GameplayTags))
+			{
+				DefaultRotation = GetOwner()->GetActorRotation();
+				if (!Actors.Contains(OtherActor)) Actors.Add(OtherActor);
+			}
+		}
 	}
 }
 
