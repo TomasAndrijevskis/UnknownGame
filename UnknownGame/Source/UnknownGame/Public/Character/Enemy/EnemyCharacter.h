@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+class AEnemyAIController;
 class UDetectionComponent;
 class USphereComponent;
 class UAttackComponent;
@@ -49,13 +50,20 @@ private:
 	TObjectPtr<UAttackComponent> AttackComp;
 	
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UDetectionComponent> DetectionComp;
+	TObjectPtr<UDetectionComponent> DetectAttackComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDetectionComponent> DetectMovementComp;
 	
 	void BindDelegates();
 	
 	void OnDeath();
-
+	
+	UPROPERTY()
+	AEnemyAIController* AIController;
+	
 	UPROPERTY(EditAnywhere, Category = "Gameplay Tags")
 	FGameplayTagContainer GameplayTags;
 
+	float AcceptanceDistance;
 };

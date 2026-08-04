@@ -13,7 +13,7 @@ void UAttackComponent::Attack()
 	{
 		if (UHealthComponent* HealthComp = HitActor->FindComponentByClass<UHealthComponent>())
 		{
-			UE_LOG(LogTemp, Warning, TEXT("I'm %s attacking"), *GetOwner()->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("I'm %s attacking - %s"), *GetOwner()->GetName(), *HitActor->GetName());
 			HealthComp->ApplyDamage(Damage);
 		}
 	}
@@ -27,7 +27,7 @@ void UAttackComponent::HitAnything(const FTransform& OwnerTransform, FHitResult&
 	FVector3d EndLocation = StartLocation + OwnerTransform.GetRotation().GetForwardVector() * AttackDistance;
 	FCollisionQueryParams QueryParams;
 	QueryParams.AddIgnoredActor(GetOwner());
-	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, ECC_Visibility, QueryParams);
+	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, AttackChannel, QueryParams);
 	if (OutHit.bBlockingHit) DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, .5f);
 }
 

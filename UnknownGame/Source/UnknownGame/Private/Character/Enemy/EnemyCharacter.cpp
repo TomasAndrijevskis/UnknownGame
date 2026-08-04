@@ -1,6 +1,6 @@
 
 #include "Character/Enemy/EnemyCharacter.h"
-
+#include "Character/Enemy/EnemyAIController.h"
 #include "Components/SphereComponent.h"
 #include "Components/AttackComponent.h"
 #include "Components/DetectionComponent.h"
@@ -16,11 +16,11 @@ AEnemyCharacter::AEnemyCharacter()
 
 	ChaseArea = CreateDefaultSubobject<USphereComponent>(TEXT("Chase area"));
 	ChaseArea->SetupAttachment(GetRootComponent());
-
 	
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	AttackComp = CreateDefaultSubobject<UAttackComponent>(TEXT("Attack component"));
-	DetectionComp = CreateDefaultSubobject<UDetectionComponent>(TEXT("Detection component"));
+	DetectAttackComp = CreateDefaultSubobject<UDetectionComponent>(TEXT("Detect attack component"));
+	DetectMovementComp = CreateDefaultSubobject<UDetectionComponent>(TEXT("Detect movement component"));
 }
 
 
@@ -34,16 +34,31 @@ void AEnemyCharacter::BeginPlay()
 		AttackArea->SetSphereRadius(Distance);
 		ChaseArea->SetSphereRadius(Distance * 2);
 	}
+	AIController = Cast<AEnemyAIController>(GetController());
+	AcceptanceDistance = AttackComp->GetAttackDistance() / 2;
 }
 
 
 void AEnemyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (DetectionComp && DetectionComp->IsAnyoneInAttackRange())
+	if (!AttackComp || !DetectMovementComp) return;
+	if (DetectAttackComp->IsAnyoneInRange())
 	{
-		SetActorRotation(DetectionComp->GetAttackRotation());
+		SetActorRotation(DetectAttackComp->GetLookAtRotation());
 		if (AttackComp) AttackComp->Attack();
+	}
+	if (DetectMovementComp->IsAnyoneInRange() && AIController)
+	{
+		float DistanceBtwPlayerAndEnemy = FVector3d::Dist(GetActorLocation(), DetectMovementComp->GetEnemyLocation());
+		if (DistanceBtwPlayerAndEnemy > AcceptanceDistance)
+		{
+			AIController->MoveToLocation(DetectMovementComp->GetEnemyLocation(), AcceptanceDistance);
+		}
+		else
+		{
+			AIController->StopMovement();
+		}
 	}
 }
 
@@ -54,9 +69,13 @@ void AEnemyCharacter::BindDelegates()
 	{
 		HealthComp->OnDeathDelegate.AddUObject(this, &AEnemyCharacter::OnDeath);
 	}
-	if (AttackArea && DetectionComp && ChaseArea)
+	if (AttackArea && DetectAttackComp)
 	{
-		DetectionComp->InitComponent(AttackArea, ChaseArea);
+		DetectAttackComp->InitComponent(AttackArea);
+	}
+	if (ChaseArea && DetectMovementComp)
+	{
+		DetectMovementComp->InitComponent(ChaseArea);
 	}
 }
 

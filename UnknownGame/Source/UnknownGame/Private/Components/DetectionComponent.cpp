@@ -5,10 +5,10 @@
 #include "Kismet/KismetMathLibrary.h"
 
 
-void UDetectionComponent::InitComponent(UPrimitiveComponent* Component)
+void UDetectionComponent::InitComponent(UPrimitiveComponent* Area)
 {
-	Component->OnComponentBeginOverlap.AddUniqueDynamic(this, &UDetectionComponent::OnBeginOverlap);
-	Component->OnComponentEndOverlap.AddUniqueDynamic(this, &UDetectionComponent::OnEndOverlap);
+	Area->OnComponentBeginOverlap.AddUniqueDynamic(this, &UDetectionComponent::OnBeginOverlap);
+	Area->OnComponentEndOverlap.AddUniqueDynamic(this, &UDetectionComponent::OnEndOverlap);
 }
 
 
@@ -39,5 +39,6 @@ void UDetectionComponent::OnEndOverlap(UPrimitiveComponent* OverlappedComponent,
 }
 
 
-bool UDetectionComponent::IsAnyoneInAttackRange() const {return Actors.Num() > 0;}
-FRotator UDetectionComponent::GetAttackRotation() const{return UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), Actors.Last()->GetActorLocation());}
+bool UDetectionComponent::IsAnyoneInRange() const {return Actors.Num() > 0;}
+FRotator UDetectionComponent::GetLookAtRotation() const{return UKismetMathLibrary::FindLookAtRotation(GetOwner()->GetActorLocation(), Actors.Last()->GetActorLocation());}
+FVector3d UDetectionComponent::GetEnemyLocation() const{return Actors.Last()->GetActorLocation();}

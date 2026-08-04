@@ -13,11 +13,13 @@ class UNKNOWNGAME_API UDetectionComponent : public UActorComponent
 
 public:	
 
-	void InitComponent(UPrimitiveComponent* Component);
+	void InitComponent(UPrimitiveComponent* Area);
 
-	bool IsAnyoneInAttackRange() const;
+	bool IsAnyoneInRange() const;
 
-	FRotator GetAttackRotation() const;
+	FRotator GetLookAtRotation() const;
+
+	FVector3d GetEnemyLocation() const;
 	
 private:
 
@@ -31,5 +33,6 @@ private:
 	TArray<AActor*> Actors;
 
 	FRotator DefaultRotation;
-	
+
+	float AttackDistance;
 };

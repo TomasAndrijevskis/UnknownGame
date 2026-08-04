@@ -37,4 +37,7 @@ private:
 	bool bIsOnCooldown = false;
 	
 	FTimerHandle TimerHandle;
+
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ECollisionChannel> AttackChannel;
 };
