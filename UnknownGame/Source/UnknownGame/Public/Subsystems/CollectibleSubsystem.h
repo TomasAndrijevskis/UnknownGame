@@ -8,7 +8,7 @@
 
 DECLARE_MULTICAST_DELEGATE(FOnTargetReached)
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnCountChanged, int, int);
-DECLARE_MULTICAST_DELEGATE_OneParam(FOnCompleted, EEndgameResults);
+
 UCLASS()
 class UNKNOWNGAME_API UCollectibleSubsystem : public UGameInstanceSubsystem
 {
@@ -29,8 +29,6 @@ public:
 	FOnTargetReached OnTargetReachedDelegate;
 
 	FOnCountChanged OnCountChangedDelegate;
-
-	FOnCompleted OnCompletedDelegate;
 	
 private:
 	

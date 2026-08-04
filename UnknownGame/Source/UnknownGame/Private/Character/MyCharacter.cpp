@@ -6,6 +6,7 @@
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Subsystems/CollectibleSubsystem.h"
+#include "Subsystems/EndgameSubsystem.h"
 #include "UI/EndgameScreen.h"
 #include "UI/MainPlayerWidget.h"
 
@@ -42,10 +43,14 @@ void AMyCharacter::BindDelegates()
 	if (!HealthComp) return;
 	HealthComp->OnHealthChangedDelegate.AddUObject(this, &AMyCharacter::PrintHealthChanges);
 	HealthComp->OnDeathDelegate.AddUObject(this, &AMyCharacter::OnDeath);
-	UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>();
-	if (!Subsystem) return;
-	Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
-	Subsystem->OnCompletedDelegate.AddUObject(this, &AMyCharacter::OnGameEnd);
+	if (UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>())
+	{
+		Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
+	}
+	if (UEndgameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEndgameSubsystem>())
+	{
+		Subsystem->OnCompletedDelegate.AddUObject(this, &AMyCharacter::OnGameEnd);
+	}
 }
 
 

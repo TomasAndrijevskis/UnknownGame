@@ -2,6 +2,7 @@
 #include "Actors/ExitDoor.h"
 #include "Components/BoxComponent.h"
 #include "Subsystems/CollectibleSubsystem.h"
+#include "Subsystems/EndgameSubsystem.h"
 
 
 AExitDoor::AExitDoor()
@@ -14,13 +15,16 @@ AExitDoor::AExitDoor()
 void AExitDoor::OnInteract_Implementation(AActor* Interactor)
 {
 	if (bIsCompleted) return;
-	if (UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>())
+	if (UCollectibleSubsystem* CollectSubsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>())
 	{
-		if (Subsystem->IsTargetReached())
+		if (CollectSubsystem->IsTargetReached())
 		{
-			UE_LOG(LogTemp, Error, TEXT("Game is finished"));
-			bIsCompleted = true;
-			Subsystem->OnCompletedDelegate.Broadcast(EEndgameResults::Win);
+			if (UEndgameSubsystem* EndgameSubsystem = GetGameInstance()->GetSubsystem<UEndgameSubsystem>())
+			{
+				UE_LOG(LogTemp, Error, TEXT("Game is finished"));
+				bIsCompleted = true;
+				EndgameSubsystem->OnCompletedDelegate.Broadcast(EEndgameResults::Win);
+			}
 		}
 	}
 }
