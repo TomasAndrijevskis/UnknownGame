@@ -3,8 +3,9 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagAssetInterface.h"
-#include "GameFramework/Pawn.h"
-#include "EnemyPawn.generated.h"
+#include "GameplayTagContainer.h"
+#include "GameFramework/Character.h"
+#include "EnemyCharacter.generated.h"
 
 class UDetectionComponent;
 class USphereComponent;
@@ -12,15 +13,15 @@ class UAttackComponent;
 class UCapsuleComponent;
 class UHealthComponent;
 class UStaticMeshComponent;
-
 UCLASS()
-class UNKNOWNGAME_API AEnemyPawn : public APawn, public IGameplayTagAssetInterface
+class UNKNOWNGAME_API AEnemyCharacter : public ACharacter, public IGameplayTagAssetInterface
 {
 	GENERATED_BODY()
 
+
 public:
 
-	AEnemyPawn();
+	AEnemyCharacter();
 
 	virtual void GetOwnedGameplayTags(FGameplayTagContainer& TagContainer) const override;
 
@@ -36,20 +37,17 @@ protected:
 private:
 
 	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UCapsuleComponent> Collision;
-
-	UPROPERTY(EditDefaultsOnly)
-	TObjectPtr<UStaticMeshComponent> Mesh;
-
-	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USphereComponent> AttackArea;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USphereComponent> ChaseArea;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UHealthComponent> HealthComp;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttackComponent> AttackComp;
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UDetectionComponent> DetectionComp;
 	
@@ -59,4 +57,5 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Gameplay Tags")
 	FGameplayTagContainer GameplayTags;
+
 };
