@@ -1,5 +1,5 @@
 
-#include "Actors/Collectible.h"
+#include "UnknownGame/Public/Objects/Collectible.h"
 #include "Components/SphereComponent.h"
 #include "Subsystems/CollectibleSubsystem.h"
 

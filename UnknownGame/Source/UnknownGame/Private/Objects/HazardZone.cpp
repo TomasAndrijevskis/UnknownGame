@@ -1,5 +1,5 @@
 
-#include "Actors/HazardZone.h"
+#include "UnknownGame/Public/Objects/HazardZone.h"
 #include "Components/HealthComponent.h"
 #include "Components/SphereComponent.h"
 

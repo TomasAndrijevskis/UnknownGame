@@ -1,5 +1,5 @@
 
-#include "Actors/ExitDoor.h"
+#include "UnknownGame/Public/Objects/ExitDoor.h"
 #include "Components/BoxComponent.h"
 #include "Subsystems/CollectibleSubsystem.h"
 #include "Subsystems/EndgameSubsystem.h"
