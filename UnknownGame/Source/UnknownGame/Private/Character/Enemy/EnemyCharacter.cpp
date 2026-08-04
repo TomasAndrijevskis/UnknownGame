@@ -3,6 +3,7 @@
 #include "Character/Enemy/EnemyAIController.h"
 #include "Components/SphereComponent.h"
 #include "Components/AttackComponent.h"
+#include "Components/DamageFeedbackComponent.h"
 #include "Components/DetectionComponent.h"
 #include "Components/HealthComponent.h"
 
@@ -19,6 +20,7 @@ AEnemyCharacter::AEnemyCharacter()
 	
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	AttackComp = CreateDefaultSubobject<UAttackComponent>(TEXT("Attack component"));
+	DamageFeedbackComp = CreateDefaultSubobject<UDamageFeedbackComponent>(TEXT("Damage feedback component"));
 	DetectAttackComp = CreateDefaultSubobject<UDetectionComponent>(TEXT("Detect attack component"));
 	DetectMovementComp = CreateDefaultSubobject<UDetectionComponent>(TEXT("Detect movement component"));
 }
@@ -68,6 +70,7 @@ void AEnemyCharacter::BindDelegates()
 	if (HealthComp)
 	{
 		HealthComp->OnDeathDelegate.AddUObject(this, &AEnemyCharacter::OnDeath);
+		if (DamageFeedbackComp) HealthComp->OnHealthChangedDelegate.AddUObject(DamageFeedbackComp, &UDamageFeedbackComponent::OnDamageReceived);
 	}
 	if (AttackArea && DetectAttackComp)
 	{

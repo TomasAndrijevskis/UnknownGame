@@ -8,6 +8,7 @@
 #include "MyCharacter.generated.h"
 
 
+class UDamageFeedbackComponent;
 class UEndgameScreen;
 class UAttackComponent;
 class UMainPlayerWidget;
@@ -51,10 +52,11 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UAttackComponent* AttackComp;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDamageFeedbackComponent> DamageFeedbackComp;
+	
 	void BindDelegates();
 	
-	void PrintHealthChanges(float NewHealth, float MaxHealth, float Delta);
-
 	void OnCollectibleTargetReached();
 	
 	void OnGameEnd(EEndgameResults Result);

@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+class UDamageFeedbackComponent;
 class AEnemyAIController;
 class UDetectionComponent;
 class USphereComponent;
@@ -33,7 +34,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
-
 	
 private:
 
@@ -48,6 +48,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UAttackComponent> AttackComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UDamageFeedbackComponent> DamageFeedbackComp;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UDetectionComponent> DetectAttackComp;

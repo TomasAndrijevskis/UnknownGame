@@ -2,6 +2,7 @@
 #include "Character/MyCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "Components/AttackComponent.h"
+#include "Components/DamageFeedbackComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/InteractionComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,6 +17,7 @@ AMyCharacter::AMyCharacter()
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(TEXT("Health component"));
 	InteractionComp = CreateDefaultSubobject<UInteractionComponent>(TEXT("Interaction component"));
 	AttackComp = CreateDefaultSubobject<UAttackComponent>(TEXT("Attack component"));
+	DamageFeedbackComp = CreateDefaultSubobject<UDamageFeedbackComponent>(TEXT("Damage feedback component"));
 }
 
 
@@ -40,9 +42,11 @@ void AMyCharacter::BeginPlay()
 
 void AMyCharacter::BindDelegates()
 {
-	if (!HealthComp) return;
-	HealthComp->OnHealthChangedDelegate.AddUObject(this, &AMyCharacter::PrintHealthChanges);
-	HealthComp->OnDeathDelegate.AddUObject(this, &AMyCharacter::OnDeath);
+	if (HealthComp)
+	{
+		HealthComp->OnDeathDelegate.AddUObject(this, &AMyCharacter::OnDeath);
+		if (DamageFeedbackComp) HealthComp->OnHealthChangedDelegate.AddUObject(DamageFeedbackComp, &UDamageFeedbackComponent::OnDamageReceived);
+	}
 	if (UCollectibleSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UCollectibleSubsystem>())
 	{
 		Subsystem->OnTargetReachedDelegate.AddUObject(this, &AMyCharacter::OnCollectibleTargetReached);
@@ -87,12 +91,6 @@ void AMyCharacter::CreatePlayersWidget()
 	TObjectPtr<UMainPlayerWidget> PlayersWidgetRef = CreateWidget<UMainPlayerWidget>(PC, PlayersWidgetClass);
 	if (!PlayersWidgetRef) return;
 	PlayersWidgetRef->AddToViewport(0);
-}
-
-
-void AMyCharacter::PrintHealthChanges(float NewHealth, float MaxHealth, float Delta)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Health: %f, Delta: %f"), NewHealth, Delta);
 }
 
 
