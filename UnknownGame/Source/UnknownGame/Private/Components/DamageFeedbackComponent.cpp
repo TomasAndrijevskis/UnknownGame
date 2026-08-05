@@ -8,7 +8,6 @@ void UDamageFeedbackComponent::OnDamageReceived(float CurrentHealth, float MaxHe
 {
 	if (Delta < 0.f)
 	{
-		UE_LOG(LogTemp, Display, TEXT("DamageFeedback Received"));
 		if (ACharacter* Owner = Cast<ACharacter>(GetOwner()))
 		{
 			FVector3d ForwardVector = Owner->GetActorForwardVector();

@@ -22,6 +22,6 @@ void UInteractionComponent::HitAnything(const FTransform& OwnerTransform, FHitRe
 	const FVector3d EndLocation = StartLocation + OwnerTransform.GetRotation().GetForwardVector() * InteractableDistance;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(GetOwner());
-	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, ECC_Visibility, Params);
+	GetWorld()->LineTraceSingleByChannel(OutHit, StartLocation, EndLocation, Channel, Params);
 	if (OutHit.bBlockingHit) DrawDebugLine(GetWorld(), StartLocation, EndLocation, FColor::Red, false, 3.f);
 }

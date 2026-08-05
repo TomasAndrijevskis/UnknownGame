@@ -21,4 +21,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float InteractableDistance = 200.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	TEnumAsByte<ECollisionChannel> Channel;
 };
