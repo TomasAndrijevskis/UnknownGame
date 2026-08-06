@@ -20,6 +20,12 @@ void UCollectibleSubsystem::ReportCollected()
 }
 
 
+void UCollectibleSubsystem::ResetData()
+{
+	Count = 0;
+}
+
+
 bool UCollectibleSubsystem::IsTargetReached() const {return Count >= Target;}
 bool UCollectibleSubsystem::CanAdd() const {return Count < Target;}
 int UCollectibleSubsystem::GetCount() const{return Count;}

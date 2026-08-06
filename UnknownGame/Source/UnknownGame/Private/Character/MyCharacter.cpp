@@ -1,6 +1,7 @@
 
 #include "Character/MyCharacter.h"
 #include "EnhancedInputComponent.h"
+#include "Character/MyPlayerController.h"
 #include "Components/AttackComponent.h"
 #include "Components/DamageFeedbackComponent.h"
 #include "Components/HealthComponent.h"
@@ -75,12 +76,13 @@ void AMyCharacter::OnGameEnd(EEndgameResults Result)
 
 void AMyCharacter::CreateEndgameWidget(EEndgameResults Result)
 {
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	AMyPlayerController* PC = Cast<AMyPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (!EndgameWidgetClass || !PC) return;
 	TObjectPtr<UEndgameScreen> EndgameWidgetRef = CreateWidget<UEndgameScreen>(PC, EndgameWidgetClass);
 	if (!EndgameWidgetRef) return;
 	EndgameWidgetRef->SetMessage(Result);
 	EndgameWidgetRef->AddToViewport(0);
+	PC->ChangePlayerInput(true);
 }
 
 

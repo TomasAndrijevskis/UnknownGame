@@ -1,13 +1,12 @@
 
 #include "Subsystems/ObstacleSubsystem.h"
 
-bool UObstacleSubsystem::IsDoorLocked() const
+
+void UObstacleSubsystem::ResetData()
 {
-	return bIsLocked;
+	bIsLocked = true;
 }
 
 
-void UObstacleSubsystem::UnlockDoor()
-{
-	bIsLocked = false;
-}
+void UObstacleSubsystem::UnlockDoor(){bIsLocked = false;}
+bool UObstacleSubsystem::IsDoorLocked() const{return bIsLocked;}

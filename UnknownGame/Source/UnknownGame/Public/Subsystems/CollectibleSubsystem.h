@@ -25,6 +25,8 @@ public:
 	int GetCount() const;
 
 	int GetTarget() const;
+
+	void ResetData();
 	
 	FOnTargetReached OnTargetReachedDelegate;
 

@@ -17,6 +17,8 @@ public:
 
 	void UnlockDoor();
 
+	void ResetData();
+	
 private:
 
 	bool bIsLocked = true;

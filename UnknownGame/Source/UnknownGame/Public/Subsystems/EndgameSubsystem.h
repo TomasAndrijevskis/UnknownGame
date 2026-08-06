@@ -7,6 +7,7 @@
 #include "EndgameSubsystem.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnCompleted, EEndgameResults);
+DECLARE_MULTICAST_DELEGATE(FOnRestarted)
 UCLASS()
 class UNKNOWNGAME_API UEndgameSubsystem : public UGameInstanceSubsystem
 {
@@ -14,9 +15,8 @@ class UNKNOWNGAME_API UEndgameSubsystem : public UGameInstanceSubsystem
 
 public:
 
-	FOnCompleted OnCompletedDelegate;
+	void OnRestarted();
 	
-private:
-
+	FOnCompleted OnCompletedDelegate;
 	
 };

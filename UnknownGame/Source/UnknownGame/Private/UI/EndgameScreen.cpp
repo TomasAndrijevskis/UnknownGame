@@ -1,12 +1,25 @@
 
 #include "UI/EndgameScreen.h"
+
+#include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Subsystems/EndgameSubsystem.h"
 
 
 void UEndgameScreen::NativeConstruct()
 {
 	Super::NativeConstruct();
+	Button_Restart->OnClicked.AddUniqueDynamic(this, &UEndgameScreen::OnButtonClicked);
 	PlayAnimation(Anim, 0.f, 1, EUMGSequencePlayMode::Forward, 1.f, false);
+}
+
+
+void UEndgameScreen::OnButtonClicked()
+{
+	if (UEndgameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEndgameSubsystem>())
+	{
+		Subsystem->OnRestarted();
+	}
 }
 
 

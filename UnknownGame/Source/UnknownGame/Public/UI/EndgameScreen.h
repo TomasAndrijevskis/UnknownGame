@@ -7,6 +7,7 @@
 #include "EndgameScreen.generated.h"
 
 
+class UButton;
 class UTextBlock;
 
 UCLASS()
@@ -29,4 +30,10 @@ private:
 
 	UPROPERTY(Transient, meta = (BindWidgetAnim))
 	UWidgetAnimation* Anim;
+
+	UPROPERTY(meta = (BindWidget))
+	UButton* Button_Restart;
+
+	UFUNCTION()
+	void OnButtonClicked();
 };
