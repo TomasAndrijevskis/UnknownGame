@@ -18,7 +18,7 @@ void UEndgameScreen::OnButtonClicked()
 {
 	if (UEndgameSubsystem* Subsystem = GetGameInstance()->GetSubsystem<UEndgameSubsystem>())
 	{
-		Subsystem->OnRestarted();
+		Subsystem->Restart();
 	}
 }
 

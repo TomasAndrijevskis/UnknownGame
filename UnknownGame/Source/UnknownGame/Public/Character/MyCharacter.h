@@ -8,6 +8,7 @@
 #include "MyCharacter.generated.h"
 
 
+class AMyPlayerController;
 class UDamageFeedbackComponent;
 class UEndgameScreen;
 class UAttackComponent;
@@ -75,4 +76,7 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UEndgameScreen> EndgameWidgetClass;
+
+	UPROPERTY()
+	AMyPlayerController* PC;
 };

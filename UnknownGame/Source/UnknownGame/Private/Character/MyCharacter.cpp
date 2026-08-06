@@ -6,7 +6,6 @@
 #include "Components/DamageFeedbackComponent.h"
 #include "Components/HealthComponent.h"
 #include "Components/InteractionComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "Subsystems/CollectibleSubsystem.h"
 #include "Subsystems/EndgameSubsystem.h"
 #include "UI/EndgameScreen.h"
@@ -36,6 +35,9 @@ void AMyCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputC
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	PC = Cast<AMyPlayerController>(GetWorld()->GetFirstPlayerController());
+	if (!PC) return;
+	PC->ChangePlayerInput(false);
 	BindDelegates();
 	CreatePlayersWidget();
 }
@@ -67,7 +69,6 @@ void AMyCharacter::OnDeath()
 
 void AMyCharacter::OnGameEnd(EEndgameResults Result)
 {
-	APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
 	if (!PC) return;
 	this->DisableInput(PC);
 	CreateEndgameWidget(Result);
@@ -76,7 +77,6 @@ void AMyCharacter::OnGameEnd(EEndgameResults Result)
 
 void AMyCharacter::CreateEndgameWidget(EEndgameResults Result)
 {
-	AMyPlayerController* PC = Cast<AMyPlayerController>(GetWorld()->GetFirstPlayerController());
 	if (!EndgameWidgetClass || !PC) return;
 	TObjectPtr<UEndgameScreen> EndgameWidgetRef = CreateWidget<UEndgameScreen>(PC, EndgameWidgetClass);
 	if (!EndgameWidgetRef) return;
@@ -88,7 +88,6 @@ void AMyCharacter::CreateEndgameWidget(EEndgameResults Result)
 
 void AMyCharacter::CreatePlayersWidget()
 {
-	APlayerController* PC = GetWorld()->GetFirstPlayerController();
 	if (!PlayersWidgetClass || !PC) return;
 	TObjectPtr<UMainPlayerWidget> PlayersWidgetRef = CreateWidget<UMainPlayerWidget>(PC, PlayersWidgetClass);
 	if (!PlayersWidgetRef) return;

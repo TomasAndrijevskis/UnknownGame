@@ -15,7 +15,7 @@ class UNKNOWNGAME_API UEndgameSubsystem : public UGameInstanceSubsystem
 
 public:
 
-	void OnRestarted();
+	void Restart();
 	
 	FOnCompleted OnCompletedDelegate;
 	

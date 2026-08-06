@@ -6,7 +6,7 @@
 #include "Subsystems/ObstacleSubsystem.h"
 
 
-void UEndgameSubsystem::OnRestarted()
+void UEndgameSubsystem::Restart()
 {
 	if (ULevel* CurrentLevel = GetWorld()->GetCurrentLevel())
 	{
@@ -18,10 +18,10 @@ void UEndgameSubsystem::OnRestarted()
 		{
 			Subsystem->ResetData();
 		}
-		if (AMyPlayerController* PC = Cast<AMyPlayerController>(GetWorld()->GetFirstPlayerController()))
+		/*if (AMyPlayerController* PC = Cast<AMyPlayerController>(GetWorld()->GetFirstPlayerController()))
 		{
 			PC->ChangePlayerInput(false);
-		}
+		}*/
 		UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevel->GetName()), true);
 	}
 }
